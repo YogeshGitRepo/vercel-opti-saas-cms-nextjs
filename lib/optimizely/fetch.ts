@@ -32,10 +32,13 @@ const optimizelyFetch = async <Response, Variables = object>({
 > => {
   const configHeaders = headers ?? {}
 
-  if (preview) {
-    configHeaders.Authorization = `Basic ${process.env.OPTIMIZELY_PREVIEW_SECRET}`
-    cache = 'no-store'
-  }
+  // Always set auth
+configHeaders.Authorization = `Basic ${process.env.OPTIMIZELY_AUTH_TOKEN}`
+
+// Only change cache for preview
+if (preview) {
+  cache = 'no-store'
+}
   const cacheTags = ['optimizely-content']
   if (cacheTag) {
     cacheTags.push(cacheTag)
