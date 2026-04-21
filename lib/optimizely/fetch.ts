@@ -32,10 +32,7 @@ const optimizelyFetch = async <Response, Variables = object>({
 > => {
   const configHeaders = headers ?? {}
 
-  // Always set auth
-configHeaders.Authorization = `Basic ${process.env.OPTIMIZELY_AUTH_TOKEN}`
-
-// Only change cache for preview
+  // Only change cache for preview
 if (preview) {
   cache = 'no-store'
 }
