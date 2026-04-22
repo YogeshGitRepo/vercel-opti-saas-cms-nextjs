@@ -48,9 +48,13 @@ export default async function CmsPage(props: {
   return (
     <div className="container py-10" data-epi-edit="blocks">
       <OnPageEdit
-        version={version}
-        currentRoute={`/${locale}/draft/${version}/${slug}`}
-      />
+  version={version}
+  currentRoute={
+    slug
+      ? `/${locale}/draft/${version}/${slug}`
+      : `/${locale}/draft/${version}`
+  }
+/>
 
       <Suspense>
         <ContentAreaMapper blocks={blocks} preview />
