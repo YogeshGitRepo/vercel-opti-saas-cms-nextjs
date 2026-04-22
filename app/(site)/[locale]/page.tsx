@@ -59,8 +59,6 @@ export default async function HomePage(props: {
   const blocks = (startPage.blocks ?? []).filter(Boolean)
 
   return (
-    <Suspense>
-      <ContentAreaMapper blocks={blocks} />
-    </Suspense>
-  )
+  <pre>{JSON.stringify(blocks, null, 2)}</pre>
+)
 }
