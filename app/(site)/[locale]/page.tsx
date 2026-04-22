@@ -10,6 +10,16 @@ import { Suspense } from 'react'
 
 export const dynamic = 'force-dynamic'
 
+function getBestStartPage(data: any) {
+  return (
+    data?.StartPage?.items?.find(
+      (x: any) =>
+        x?.title &&
+        x?.blocks?.length > 0
+    ) ?? null
+  )
+}
+
 export async function generateMetadata(props: {
   params: Promise<{ locale: string }>
 }): Promise<Metadata> {
@@ -17,7 +27,7 @@ export async function generateMetadata(props: {
   const locales = getValidLocale(locale)
 
   const pageResp = await optimizely.GetStartPage({ locales })
-  const page = pageResp.data?.StartPage?.item
+  const page = getBestStartPage(pageResp.data)
 
   if (!page) return {}
 
@@ -50,15 +60,17 @@ export default async function HomePage(props: {
     { preview: false }
   )
 
-  const startPage = pageResponse.data?.StartPage?.item
+ const startPage = getBestStartPage(pageResponse.data)
 
-  if (!startPage) {
-    return <div>No homepage content found.</div>
-  }
+if (!startPage) {
+  return <div>No homepage content found.</div>
+}
 
-  const blocks = (startPage.blocks ?? []).filter(Boolean)
+const blocks = (startPage.blocks ?? []).filter(Boolean)
 
-  return (
-  <pre>{JSON.stringify(blocks, null, 2)}</pre>
+return (
+  <Suspense>
+    <ContentAreaMapper blocks={blocks} />
+  </Suspense>
 )
 }
